@@ -1,0 +1,105 @@
+
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+    <title> USERS' PAGE </title>
+    <head>
+        <link rel="stylesheet" href="css/addMovieStyle.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <!-- style css -->
+        <link rel="stylesheet" href="css/style.css">
+        <!-- Responsive-->
+        <link rel="stylesheet" href="css/responsive.css">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <h1 style=" color: #0f69c6; text-align: center; " >WELCOME TO RWANDA CINEMA PUB</h1>
+        <h3>Available movies:</h3>
+        <button type="button" class="btn btn-info" onclick="logout()">
+          Logout
+        </button>
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Price</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody class="tabbody">
+        
+            </tbody>
+          </table>
+        <script>
+          if (localStorage.getItem("loggedin") === null) {
+            window.location.href="login";
+           }
+           
+        </script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    
+axios.get("http://localhost:8080/api/allMovies")
+  .then(function (response) {
+    let html = "";
+    
+    const post = document.querySelector('.tabbody');
+
+      const movies = response.data;
+      console.log(movies);
+      movies.forEach(element => {
+          const postElement = `
+        <tr>
+            <td>${element.title}</td>
+            <td>${element.description}</td>  
+            <td>${element.views}</td>
+      <td><a href='${element.trailer}' class="btn btn-success" onclick="" >Play Trailer</button></a>
+<td><button class="btn btn-warning" onclick="buy('${element.movieId}')"id="buy" >Buy ticket</button></td>
+                </tr>
+        </form>
+        `
+        html += postElement;
+      
+      });
+      post.innerHTML = html;
+      
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+    
+  function logout() {
+      localStorage.removeItem('loggedin');
+      localStorage.removeItem('role');
+      window.location.href="login";
+    }
+
+
+
+
+
+
+
+    
+
+</script>
+
+</body>
+
+<footer>
+    <div class="copyright">
+        <div class="container">
+            <p>© 2023 All Rights Reserved. Murenzi Prince 23730</p>
+        </div>
+    </div>
+    </div>
+    </footer>
+
+
+</html>
